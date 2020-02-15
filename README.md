@@ -1,7 +1,7 @@
 # Muzo
 A music app for No one.
 
-##Action Items
+## Action Items
 1. figure out difference between DAO and Repository
 2. figure out where to use @Repository
 3. Finalise a directory structure
