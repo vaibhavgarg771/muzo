@@ -10,7 +10,7 @@ for MySQL, after installing run the following commands
 
 
 ##Action Items
-1. 
+1. get some action items
 
 ## Tech Stack 
 1. Java
