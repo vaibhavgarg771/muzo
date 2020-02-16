@@ -2,6 +2,8 @@ package org.iitr.muzo.models;
 
 import javax.persistence.*;
 
+//deprecated: not meant to be used
+
 @Entity
 @Table(name = "Teacher")
 public class Teacher {

@@ -1,10 +1,16 @@
 # Muzo
 A music app for No one.
 
+## Getting started
+
+for MySQL, after installing run the following commands 
+1. create database muzo_server
+2. create user 'root'@'%' identified by 'password'
+3. grant all on muzo_server.* to 'root'@'%'
+
+
 ##Action Items
-1. figure out difference between DAO and Repository
-2. figure out where to use @Repository
-3. Finalise a directory structure
+1. 
 
 ## Tech Stack 
 1. Java
@@ -12,4 +18,6 @@ A music app for No one.
 3. Spring Boot 
 4. Hibernate 
 5. MySQL
+
+
 

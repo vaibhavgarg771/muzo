@@ -5,6 +5,8 @@ import org.iitr.muzo.models.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+//deprecated: not meant to be used
+
 @Service
 public class TeacherService {
 
