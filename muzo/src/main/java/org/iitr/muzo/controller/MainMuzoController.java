@@ -1,10 +1,7 @@
 package org.iitr.muzo.controller;
 
-import org.iitr.muzo.dao.TeacherDao;
-import org.iitr.muzo.models.Teacher;
 import org.iitr.muzo.models.UserDetails;
 import org.iitr.muzo.services.PlaylistService;
-import org.iitr.muzo.services.TeacherService;
 import org.iitr.muzo.services.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping(path = "/muzo")
 public class MainMuzoController {
@@ -47,9 +45,9 @@ public class MainMuzoController {
     }
 
     @GetMapping(path = "/error")
-    public String error(){
-        System.out.println("I came here");
-        return "there was some error";
+    public ResponseEntity<?> error(){
+        System.out.println("I came here" + new Date().getTime());
+        return new ResponseEntity<>("there was some error, That I wish I could display properly", HttpStatus.OK);
     }
 
     //now deprecated; was used for debugging
