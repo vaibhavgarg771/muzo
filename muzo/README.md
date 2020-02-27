@@ -25,7 +25,7 @@ and configure them in angular.json
     ]
 ```
 ## Action Items
-1. implement the Login, Logout functionality (without SSL/ bothering about too much security, absolute basic)
+1. Form validations for signup and Login
 
 ## Tech Stack 
 1. Java

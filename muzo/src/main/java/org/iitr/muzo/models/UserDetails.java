@@ -12,25 +12,26 @@ public class UserDetails implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+    private long id;
 
-    @Column(unique = true)
-    private String userName;
-    private String password;
+    @OneToOne
+    @JoinColumn(name = "FK_User_UserDetails")
+    private User user;
+
     private String email;
     private String name;
     private String phone;
+
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @Column(name = "D.O.B.")
-    public Date dob;
+    private  Date dob;
 //    public String languages;
 
     public UserDetails(){
-
     }
-    public UserDetails(String userName, String password, String email, String name, String phone, Date dob){
-        this.userName = userName;
-        this.password = password;
+
+    public UserDetails(User user, String email, String name, String phone, Date dob){
+        this.user = user;
         this.email = email;
         this.name = name;
         this.phone = phone;
@@ -38,22 +39,6 @@ public class UserDetails implements Serializable {
     }
     public long getId() {
         return id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -96,3 +81,4 @@ public class UserDetails implements Serializable {
 //        this.languages = languages;
 //    }
 }
+

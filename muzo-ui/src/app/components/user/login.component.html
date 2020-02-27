@@ -1,9 +1,9 @@
-<h1>Login</h1>
+<!-- <h1>Login</h1>
 <hr>
 <div class="col-md-4">
   <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)" autocomplete="off" novalidate>
     <div class="form-group" >
-      <label for="userName">User Name or Mobile:</label>
+      <label for="userName">Username</label>
       <em *ngIf = "loginForm.controls.userName?.invalid && (loginForm.controls.userName?.touched || mouseoverLogin)">Required</em>
       <input id="userName" (ngModel)="userName" required name="userName" type="text" class="form-control" placeholder="User Name..." />
     </div>
@@ -18,4 +18,20 @@
     </span>
     <button type="button" [routerLink] = "['/events']" class="btn btn-default">Cancel</button>
   </form>
+</div> -->
+
+<h1>Login</h1>
+<div class="col-md-4"> 
+    <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" formControlName="username" placeholder="enter username" class="form-control"/>
+        </div>
+        <div class="form-group"> 
+            <label for="password">Password:</label>
+            <input type="text" formControlName="password" placeholder="enter password" class="form-control"/>
+        </div>
+        <button type="submit" [disabled]="!loginForm.valid">Submit</button>
+
+    </form>
 </div>
