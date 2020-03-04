@@ -1,43 +1,57 @@
-<!-- <div class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" >ngEvents</a>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color:beige;">
+    <a class="navbar-brand" href="#">Muzo Logo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
   
-      <div class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">All Songs</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0 col-md-8" (ngSubmit)=search()>
+        <input class="form-control mr-sm-2 col-md-6" type="search" name="searchTerm" placeholder="Search" aria-label="Search" [(ngModel)]="searchTerm">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-1" type="submit">Search</button>
+      </form>
+      <div class="navbar-right">
         <ul class="nav navbar-nav">
-          <li>
-            <a [routerLink] = "['/events']" routerLinkActive = "active" [routerLinkActiveOptions] = "{exact:true}">All Events</a>
-          </li>
-          <li><a [routerLink] = "['/events/new']" routerLinkActive = "active">Create Event</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-              Events
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li >
-                <a href="">Angular Connect</a>
-              </li>
-            </ul>
+          <li *ngIf="!this.session.isAuthenticated()">
+            <a [routerLink] = "['muzo/login']">Login</a>
+		  </li>
+		  <li class="nav-item dropdown" *ngIf="this.session.isAuthenticated()">
+			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				{{ displayName }}
+			</a>
+			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			  <button class="dropdown-item" (click)="switchToProfile()">Profile</button>
+			  <div class="dropdown-divider"></div>
+			  <button class="dropdown-item" (click)='logout()'>Logout</button>
+			  <!-- <a class="dropdown-item" href="#">Something else here</a> -->
+			</div>
+		  </li>
+          <li> 
+            <a  ></a>
+
           </li>
         </ul>
-        <div class="navbar-header navbar-right">
-          <ul class="nav navbar-nav">
-            <li>
-              <a *ngIf="!auth.isAuthenticated()" [routerLink] = "['user/login']">Login</a>
-              <a *ngIf="auth.isAuthenticated()" [routerLink] = "['user/profile']">Welcome {{ auth.currentUser.firstName }}</a>
-            </li>
-          </ul>
-        </div>
-        <form id="searchForm" (ngSubmit)="searchSessions(searchTerm)" class="navbar-form navbar-right">
-          <div class="form-group">
-            <input [(ngModel)]="searchTerm" name="searchTerm" type="text" class="form-control" placeholder="Search Sessions" >
-          </div>
-          <button class="btn btn-default" modal-trigger="searchResults">
-            Search
-          </button>
-        </form>
       </div>
     </div>
-  </div> -->
+  </nav>

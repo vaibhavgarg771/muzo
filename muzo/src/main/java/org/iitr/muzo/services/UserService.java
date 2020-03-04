@@ -1,34 +1,36 @@
 package org.iitr.muzo.services;
 
+import org.iitr.muzo.api.LoggedInUser;
 import org.iitr.muzo.dao.UserDao;
+import org.iitr.muzo.dao.UserDetailsDao;
 import org.iitr.muzo.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 
 @Service
 public class UserService {
 
     private ServiceUtils serviceUtils;
     private UserDao userDao;
+    private UserDetailsDao userDetailDao;
 
     @Autowired
-    public UserService(ServiceUtils serviceUtils, UserDao userDao){
+    public UserService(ServiceUtils serviceUtils, UserDao userDao, UserDetailsDao userDetailsDao){
         this.serviceUtils = serviceUtils;
         this.userDao = userDao;
+        this.userDetailDao = userDetailsDao;
     }
 
-    public String loginUser(String username, String password) throws NoSuchAlgorithmException{
+    public LoggedInUser loginUser(String username, String password) throws NoSuchAlgorithmException{
         String hashedPassword = serviceUtils.hashString(password);
-        if(hashedPassword.equals(userDao.fetchUserPassword(username))){
-            return "logged in";
+        User user = userDao.validateUser(username);
+        if(hashedPassword.equals(user.getPassword())){
+            return new LoggedInUser(user.getId(), userDetailDao.getNameByUserId(user.getId()));
         }
         else {
-            return "The username or password donot match";
+            return null;
         }
     }
 

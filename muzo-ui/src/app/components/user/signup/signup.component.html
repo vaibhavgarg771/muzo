@@ -23,14 +23,19 @@
 <h1>Signup</h1>
 <div class="col-md-4"> 
     <form [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" formControlName="username" placeholder="enter username" class="form-control"/>
-        </div>
-        <div class="form-group"> 
-            <label for="password">Password:</label>
-            <input type="text" formControlName="password" placeholder="enter password" class="form-control"/>
-        </div>
+        <div class="form-group" [ngClass]="{'has-error':signupForm.email$touched && signupForm.email.$error.required, 'has-success': singupForm.email.$valid}">
+            <label for="username" class="control-label">Email:</label>
+            <input type="email" formControlName="username" placeholder="Email Address" class="form-control" [ngClass]="signupForm.controls['email'].invalid ? 'is-invalid': ''"/>
+        	<label class="has-error" *ngIf="signupForm.controls['email'].hasError('email')">Enter a valid email Address</label>
+		</div>
+        <div class="form-group" [ngClass]="{'has-error':signupForm.password$touched && signupForm.password.$error.required, 'has-success': singupForm.password.$valid}"> 
+			<label for="password" class="control-label">Password:</label>
+            <input type="password" formControlName="password" placeholder="enter password" class="form-control" [ngClass]="signupForm.controls['password'].invalid ? 'is-invalid': ''"/>
+			<label [ngClass]="signupForm.controls['password'].hasError('hasNumber')?'is-invalid':''">
+				<i>{{ singupForm.controls['password'].hasError('hasNumber') ? 'cancel': 'check_circle'}}</i>
+				Must contain atleast 1 number
+			</label>
+		</div>
         <button type="submit" [disabled]="!signupForm.valid">Submit</button>
 
     </form>

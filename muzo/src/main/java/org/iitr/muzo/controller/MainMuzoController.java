@@ -1,5 +1,6 @@
 package org.iitr.muzo.controller;
 
+import org.iitr.muzo.api.LoggedInUser;
 import org.iitr.muzo.exception.MalformedPostRequestBodyException;
 import org.iitr.muzo.exception.ResourceNotFoundException;
 import org.iitr.muzo.models.User;
@@ -13,8 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -43,7 +43,7 @@ public class MainMuzoController {
     }
 
     @PostMapping(path = "/save-user-details")
-    public ResponseEntity<?> saveUserDetails(@RequestBody UserDetails userDetails) throws ParseException {
+    public ResponseEntity<?> saveUserDetails(@RequestBody UserDetails userDetails){
 
 //        Date dob = new SimpleDateFormat("dd/MM/yyyy").parse(userDetails);
 //        UserDetails user = new UserDetails(username, password, email, name, phone, dob);
@@ -56,15 +56,15 @@ public class MainMuzoController {
         if (user.getUsername() == null || user.getPassword() == null){
             throw new MalformedPostRequestBodyException("Could not fetch Username/ Password from the request");
         }
-        String status = this.userService.loginUser(user.getUsername(), user.getPassword());
-        return new ResponseEntity<>(status, HttpStatus.OK);
+        LoggedInUser loggedInUser = this.userService.loginUser(user.getUsername(), user.getPassword());
+        return new ResponseEntity<>(loggedInUser, HttpStatus.OK);
     }
 
     @PostMapping(path = "/signup")
     public ResponseEntity<?> signupUser(@RequestBody User user) throws MalformedPostRequestBodyException, NoSuchAlgorithmException {
         System.out.println("I got a hit !! "+user.getUsername()+", "+user.getPassword());
         if (user.getUsername() == null || user.getPassword() == null){
-            throw new MalformedPostRequestBodyException("Could not fetch Username/ Password from the request");
+            throw new MalformedPostRequestBodyException("Could not fetch Username   / Password from the request");
         }
         System.out.println("crossed the if condition");
         String status = this.userService.signupUser(user);
@@ -74,7 +74,7 @@ public class MainMuzoController {
 
     @GetMapping(path = "/error")
     public ResponseEntity<?> error() throws ResourceNotFoundException{
-        System.out.println("I came here" + new Date().getTime());
+        System.out.println("I came here " + new Date().getTime());
 //        if ( 1 !=2){
 //            throw new ResourceNotFoundException("Wish I could return an error I wanted");
 //        }

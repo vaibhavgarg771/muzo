@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDao extends CrudRepository<User, Long> {
 
-    @Query("SELECT password from User WHERE username=?1")
-    String fetchUserPassword(String username);
+    @Query("SELECT u from User u WHERE u.username=?1")
+    User validateUser(String username);
 }

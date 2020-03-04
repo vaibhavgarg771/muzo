@@ -11,14 +11,14 @@ import java.util.Date;
 public class UserDetails implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @MapsId
     @OneToOne
     @JoinColumn(name = "FK_User_UserDetails")
     private User user;
 
-    private String email;
+//    private String email;
     private String name;
     private String phone;
 
@@ -30,24 +30,23 @@ public class UserDetails implements Serializable {
     public UserDetails(){
     }
 
-    public UserDetails(User user, String email, String name, String phone, Date dob){
+    public UserDetails(User user, String name, String phone, Date dob){
         this.user = user;
-        this.email = email;
         this.name = name;
         this.phone = phone;
         this.dob = dob;
     }
-    public long getId() {
-        return id;
-    }
+//    public long getId() {
+//        return id;
+//    }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
 
     public String getName() {
         return name;
