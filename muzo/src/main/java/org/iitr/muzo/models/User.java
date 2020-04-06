@@ -1,10 +1,11 @@
 package org.iitr.muzo.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "User")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,8 +33,8 @@ public class User {
         this.password = password;
     }
 
-//    When Hibernate creates instance of entities using reflection it uses Class.newInstance() method,
-//    which require a no argument constructor to create an instance.
+    //When Hibernate creates instance of entities using reflection it uses Class.newInstance() method,
+    //which require a no argument constructor to create an instance.
     public User (){}
 
     public User(String username, String password){

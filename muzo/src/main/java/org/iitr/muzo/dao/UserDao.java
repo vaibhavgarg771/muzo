@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface UserDao extends CrudRepository<User, Long> {
 
     @Query("SELECT u from User u WHERE u.username=?1")
-    User validateUser(String username);
+    User getUserByUsername(String username);
 }

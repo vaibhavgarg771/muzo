@@ -16,29 +16,17 @@ import { LoginComponent } from '../user/login/login.component';
 export class NavComponent implements OnInit{
 
     searchTerm: string = "";
-    displayName: string = "";
-    i: number=0;
+    @Input() displayName: string = "";
     constructor(private session?: SessionService, private router?: Router){}
     ngOnInit(){
-        console.log("called ngOnInit of navComponent with displayName:", this.displayName, this.i);
-        this.i+=1;
-        this.getdisplaName();
-        new LoginComponent().getUserIsLoggedIn().subscribe(name=> {
-            this.displayName = name;
-            console.log("just checking if this is even called everytime I login or logout!!");
-        })
-        this.session.getUserIsLoggedOut().subscribe(name => {
-            this.displayName = "";
-            console.log("just checking if this is even called everytime I login or logout!!");
-        })
+        this.getdisplayName();
     }
     search(){
         console.log("Searching"+this.searchTerm)
         //Search for Songs
     }
 
-    getdisplaName(){
-        console.log("fetching getdisplaName")
+    getdisplayName(){
         var expiresAt = localStorage.getItem('expiresAt');
         if(expiresAt != null){
             var expiry = new Date(expiresAt); 
@@ -58,7 +46,8 @@ export class NavComponent implements OnInit{
 
     public logout():void{
         this.session.destroySession();
-        this.ngOnInit();
+        this.displayName = "";
+        window.location.reload();
         this.router.navigate(['/muzo/home']);
     }
 

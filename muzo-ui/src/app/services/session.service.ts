@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from "@angular/core";
+import { Injectable, Output, EventEmitter, Input } from "@angular/core";
 import { ILoggedInUser } from '../models/loggedInUser.model';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { ILoggedInUser } from '../models/loggedInUser.model';
 export class SessionService{
     
     @Output() userIsLoggedOut: EventEmitter<any> = new EventEmitter();
-
+    @Input() userName: String = "";
     public isAuthenticated(): Boolean{
         var expiresAt = localStorage.getItem('expiresAt');
         if(expiresAt != null){
@@ -26,6 +26,7 @@ export class SessionService{
         let loggedInUserId = loggedInUser.userId;
         localStorage.setItem("userId", loggedInUserId.toString());
         localStorage.setItem("name", loggedInUser.name);
+        this.userName = loggedInUser.name;
         let expiresAt = new Date();
         expiresAt.setDate(expiresAt.getDate()+3);
         localStorage.setItem("expiresAt", expiresAt.toString());
