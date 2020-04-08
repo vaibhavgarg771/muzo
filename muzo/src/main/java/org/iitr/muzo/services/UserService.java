@@ -3,40 +3,45 @@ package org.iitr.muzo.services;
 import org.iitr.muzo.dao.UserDao;
 import org.iitr.muzo.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
+import java.util.ArrayList;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
-    private ServiceUtils serviceUtils;
     private UserDao userDao;
+    private PasswordEncoder bCryptEncoder;
 
     @Autowired
-    public UserService(ServiceUtils serviceUtils, UserDao userDao){
-        this.serviceUtils = serviceUtils;
+    public UserService(UserDao userDao, PasswordEncoder bCryptEncoder){
         this.userDao = userDao;
+        this.bCryptEncoder = bCryptEncoder;
     }
 
-    public String loginUser(String username, String password) throws NoSuchAlgorithmException{
-        String hashedPassword = serviceUtils.hashString(password);
-        if(hashedPassword.equals(userDao.fetchUserPassword(username))){
-            return "logged in";
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userDao.getUserByUsername(username);
+        if(user == null){
+            throw new UsernameNotFoundException("User not found with the username " + username);
         }
         else {
-            return "The username or password donot match";
+            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
         }
     }
 
-    public String signupUser(User user) throws NoSuchAlgorithmException{
-        String hashedPassword = serviceUtils.hashString(user.getPassword());
-        user.setPassword(hashedPassword);
+    public String signUpUser(User user) {
+        user.setPassword(bCryptEncoder.encode(user.getPassword()));
         userDao.save(user);
         return "saved Successfully";
+    }
+
+    public Iterable<User> getAllUsers(){
+        return userDao.findAll();
     }
 
 }

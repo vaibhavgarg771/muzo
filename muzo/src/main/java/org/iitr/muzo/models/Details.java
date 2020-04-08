@@ -8,45 +8,31 @@ import java.util.Date;
 
 @Entity
 @Table(name = "UserDetails")
-public class UserDetails implements Serializable {
+public class Details implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @MapsId
     @OneToOne
     @JoinColumn(name = "FK_User_UserDetails")
     private User user;
 
-    private String email;
     private String name;
     private String phone;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @Column(name = "D.O.B.")
     private  Date dob;
-//    public String languages;
 
-    public UserDetails(){
+    public Details(){
     }
 
-    public UserDetails(User user, String email, String name, String phone, Date dob){
+    public Details(User user, String name, String phone, Date dob){
         this.user = user;
-        this.email = email;
         this.name = name;
         this.phone = phone;
         this.dob = dob;
-    }
-    public long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getName() {
@@ -73,12 +59,5 @@ public class UserDetails implements Serializable {
         this.dob = dob;
     }
 
-//    public String getLanguages() {
-//        return languages;
-//    }
-//
-//    public void setLanguages(String languages) {
-//        this.languages = languages;
-//    }
 }
 

@@ -1,7 +1,5 @@
 package org.iitr.muzo.models;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -14,14 +12,34 @@ public class Playlist implements Serializable {
     private long id;
     private String name;
 
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Details getDetails() {
+        return details;
+    }
+
+    public void setDetails(Details details) {
+        this.details = details;
+    }
+
     @ManyToOne
     @JoinColumn(name = "FK_Playlist_User")
-    private UserDetails userDetails;
+    private Details details;
 
     public Playlist(){}
-    public Playlist(long id, String name, UserDetails userDetails){
+    public Playlist(long id, String name, Details details){
         this.id = id;
         this.name = name;
-        this.userDetails = userDetails;
+        this.details = details;
     }
 }

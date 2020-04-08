@@ -25,7 +25,9 @@ and configure them in angular.json
     ]
 ```
 ## Action Items
-1. Form validations for signup and Login
+1. Confirm Email with OTP
+2. Forgot Password/ Password Reset
+3. check if username already exists
 
 ## Tech Stack 
 1. Java
