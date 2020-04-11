@@ -32,7 +32,7 @@
         <button class="btn btn-outline-success my-2 my-sm-0 col-md-1" type="submit">Search</button>
       </form>
       <div class="navbar-right">
-        <ul class="nav navbar-nav"  *ngIf="!this.session.isAuthenticated()">
+        <ul class="nav navbar-nav"  *ngIf="this.authService.currentUserValue == null">
           <li class="nav-item">
 			<a [routerLink]="['muzo/singup']" class="nav-link">Signup</a>
 		  </li>
@@ -40,10 +40,10 @@
             <a [routerLink] = "['muzo/login']" class="nav-link">Login</a>
 		  </li>
 		</ul>
-		<ul class="nav navbar-nav" *ngIf="this.session.isAuthenticated()">
+		<ul class="nav navbar-nav" *ngIf="this.authService.currentUserValue != null">
 		  <li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				{{ this.displayName == "" ? this.session.userName:this.displayName }}
+				{{ this.currentUser.username }}
 			</a>
 			<div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdown">
 			  <button class="dropdown-item" (click)="switchToProfile()">Profile</button>

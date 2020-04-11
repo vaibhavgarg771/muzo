@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { SessionService } from 'src/app/services/session.service';
 import { Router } from '@angular/router';
-import { LoginComponent } from '../user/login/login.component';
+import { IUser } from 'src/app/models/user.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: "nav-bar", 
@@ -15,39 +17,27 @@ import { LoginComponent } from '../user/login/login.component';
 
 export class NavComponent implements OnInit{
 
+    currentUser: IUser;
+    currentUserSubscription: Subscription;
     searchTerm: string = "";
-    @Input() displayName: string = "";
-    constructor(private session?: SessionService, private router?: Router){}
-    ngOnInit(){
-        this.getdisplayName();
+
+    constructor(private authService: AuthenticationService, private router: Router){
+        this.currentUserSubscription = this.authService.currentUser.subscribe(user => {
+            this.currentUser = user;
+        })
     }
+    
+    ngOnInit(){
+
+    }
+    
     search(){
         console.log("Searching"+this.searchTerm)
         //Search for Songs
     }
 
-    getdisplayName(){
-        var expiresAt = localStorage.getItem('expiresAt');
-        if(expiresAt != null){
-            var expiry = new Date(expiresAt); 
-            if(expiry > new Date()){
-                this.displayName = localStorage.getItem("name");
-                console.log("displayName is", this.displayName);
-                var newExpiry = new Date();
-                newExpiry.setDate(newExpiry.getDate()+2);
-                localStorage.setItem("expiresAt", newExpiry.toString());
-            }
-            else{
-                localStorage.removeItem("emaill");
-                localStorage.removeItem("expiresAt");
-            }
-        }
-    }
-
     public logout():void{
-        this.session.destroySession();
-        this.displayName = "";
-        window.location.reload();
+        this.currentUserSubscription.unsubscribe();
         this.router.navigate(['/muzo/home']);
     }
 

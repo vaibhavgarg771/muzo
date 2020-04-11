@@ -1,6 +1,8 @@
 import { Injectable, Output, EventEmitter, Input } from "@angular/core";
 import { ILoggedInUser } from '../models/loggedInUser.model';
 
+
+// need to phase out the usage of this, and instead use any framework provided classes if exists
 @Injectable({
     providedIn:'root'
 })

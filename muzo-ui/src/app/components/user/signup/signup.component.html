@@ -1,42 +1,28 @@
-<!-- <h1>Signup</h1>
-<hr>
-<div class="col-md-4">
-  <form #signupForm="ngForm" (ngSubmit)="signup(signupForm.value)" autocomplete="off" novalidate>
-    <div class="form-group" >
-      <label for="userName">Username</label>
-      <em *ngIf = "signupForm.controls.userName?.invalid && (signupForm.controls.userName?.touched || mouseoversignup)">Required</em>
-      <input id="userName" (ngModel)="userName" required name="userName" type="text" class="form-control" placeholder="User Name..." />
-    </div>
-    <div class="form-group" >
-      <label for="password">Password:</label>
-      <em *ngIf = "mouseoversignup || signupForm.controls.password?.invalid && (signupForm.controls.password?.touched || mouseoversignup)">Required</em>
-      <input id="password" (ngModel)="password" name="password" required type="password" class="form-control" placeholder="Password..." />
-    </div>
-        
-    <span (mouseenter) = "mouseoversignup = true" (mouseleave) = "mouseoversignup = false">
-      <button type="submit" class="btn btn-primary" [disabled] = "signupForm?.invalid">Signup</button>
-    </span>
-    <button type="button" [routerLink] = "['/events']" class="btn btn-default">Cancel</button>
-  </form>
-</div> -->
-
-<h1>Signup</h1>
-<div class="col-md-4"> 
-    <form [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
-        <div class="form-group" [ngClass]="{'has-error':signupForm.email$touched && signupForm.email.$error.required, 'has-success': singupForm.email.$valid}">
-            <label for="username" class="control-label">Email:</label>
-            <input type="email" formControlName="username" placeholder="Email Address" class="form-control" [ngClass]="signupForm.controls['email'].invalid ? 'is-invalid': ''"/>
-        	<label class="has-error" *ngIf="signupForm.controls['email'].hasError('email')">Enter a valid email Address</label>
+<div class="d-flex justify-content-center">
+	<div class="col-md-4">
+		<div class="card">
+			<div class="card-header text-center">
+				<h1>Signup</h1>
+			</div>
+			<form [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
+				<div class="card-body"> 
+					<div class="form-group">
+						<label for="username" class="control-label">Email:</label>
+						<input type="email" formControlName="username" placeholder="Email Address" class="form-control"/>
+					</div>
+					<div class="form-group"> 
+						<label for="password" class="control-label">Password:</label>
+						<input type="password" formControlName="password" placeholder="enter password" class="form-control"/>
+					</div>
+					<div>
+						<label for="confirmPassword" class="control-label">Confirm Password:</label>
+						<input type="password" formControlName="confirmPassword" placeholder="Confirm password" class="form-control"/>
+					</div>
+				</div>
+				<div class="card-footer">
+					<button class="btn btn-primary" type="submit" [disabled]="!signupForm.valid">Submit</button>
+				</div>
+			</form>
 		</div>
-        <div class="form-group" [ngClass]="{'has-error':signupForm.password$touched && signupForm.password.$error.required, 'has-success': singupForm.password.$valid}"> 
-			<label for="password" class="control-label">Password:</label>
-            <input type="password" formControlName="password" placeholder="enter password" class="form-control" [ngClass]="signupForm.controls['password'].invalid ? 'is-invalid': ''"/>
-			<label [ngClass]="signupForm.controls['password'].hasError('hasNumber')?'is-invalid':''">
-				<i>{{ singupForm.controls['password'].hasError('hasNumber') ? 'cancel': 'check_circle'}}</i>
-				Must contain atleast 1 number
-			</label>
-		</div>
-        <button type="submit" [disabled]="!signupForm.valid">Submit</button>
-
-    </form>
+	</div>
 </div>
