@@ -15,4 +15,12 @@ export class ValidationService{
             return valid ? null: error;
         }
     }
+
+    public passwordMatch(control: AbstractControl){
+        const password = control.get('passord').value;
+        const confPassword = control.get('confirmPassword').value;
+        if(password !== confPassword){
+            control.get('confirmPassword').setErrors({PasswordMatch: false});
+        }
+    }
 }

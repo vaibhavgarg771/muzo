@@ -1,13 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { IUser } from '../../../models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FormGroup, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ILoggedInUser } from '../../../models/loggedInUser.model';
-import { SessionService } from 'src/app/services/session.service';
-import { NavComponent } from '../../nav/nav.component';
-import { Session } from 'protractor';
-// import { Session } from 'inspector';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AlertService } from 'src/app/services/alert.service';
+import { first } from 'rxjs/operators';
 
 @Component({
     selector:"login", 
@@ -16,32 +13,45 @@ import { Session } from 'protractor';
 
 export class LoginComponent implements OnInit{
    
-    public loggedInUser:ILoggedInUser;
-    @Output() userIsLoggedIn: EventEmitter<any> = new EventEmitter();
+    loading: boolean = false;
+    private returnUrl: String;
+    loginForm: FormGroup;
 
-    session2: Session
-    loginForm = new FormGroup({
-        username: new FormControl(''),
-        password: new FormControl(''),
-    });
-
-    constructor(private authService?: AuthenticationService, private router?: Router, private session?: SessionService){}
-
-    ngOnInit(){
-        if(this.session.isAuthenticated()){
-            this.router.navigate(['muzo/home']);
+    constructor(private formBuilder: FormBuilder,
+                private authService: AuthenticationService,
+                private router: Router,
+                private route: ActivatedRoute, 
+                private alertService: AlertService){
+        if(this.authService.currentUserValue){
+            this.router.navigate(["muzo/home"]);
         }
     }
 
-    login(loginForm: IUser){
-        console.log(loginForm);
-        this.authService.login(loginForm)
+    ngOnInit(){
+        this.loginForm = this.formBuilder.group({
+            username: ['', [Validators.required, Validators.email]], 
+            password: ['', [Validators.required, Validators.minLength(8)]]        })
+        this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "muzo/home";
     }
 
-    getUserIsLoggedIn(){
-        return this.userIsLoggedIn;
+    get formControls(){
+        // this.loginForm.controls.username.errors.email
+        return this.loginForm.controls;
     }
-    cancel(){
-        //doNOTHING
+
+    login(){
+        if(this.loginForm.invalid){
+            return;
+        }
+        this.loading = true;
+        this.authService.login(this.formControls.username.value, this.formControls.password.value)
+            .pipe(first())
+            .subscribe(user => {
+                this.router.navigate([this.returnUrl]);
+            }, 
+            err => {
+                this.alertService.error("Invalid username or password :" + err);
+                this.loading = false;
+            });
     }
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { IUser } from '../../../models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ValidationService } from '../../../services/validation.service';
+import { Router } from '@angular/router';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
     selector:"signup", 
@@ -10,25 +12,36 @@ import { ValidationService } from '../../../services/validation.service';
 })
 
 export class SignupComponent implements OnInit{
-    // username: string; 
-    // password: string;
-    status: string;
-    signupForm = new FormGroup({
-        username: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(8),
-            this.validations.patternValidator(/\d/, {hasNumber: true}), 
-            this.validations.patternValidator(/[A-Z]/, {hasUpperCase: true}), 
-            this.validations.patternValidator(/[a-z]/, {hasLowerCase: true}), 
-            this.validations.patternValidator(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/, {hasSpecialCharacter: true})]),
-        confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)])
-    });
+    signUpForm: FormGroup;
+    loading:boolean = false;
 
-    constructor(private authService: AuthenticationService, private validations: ValidationService){}
+
+    status: string;
+    constructor(private formBuilder: FormBuilder,
+                private authService: AuthenticationService, 
+                private router: Router, 
+                private alertService: AlertService, 
+                private custValidations: ValidationService){}
 
     ngOnInit(){
+        this.signUpForm = this.formBuilder.group({
+            username: ['', [Validators.required, Validators.email]], 
+            password: ['', [Validators.required,
+                this.custValidations.patternValidator(/\d/, {hasNumber: true}), 
+                this.custValidations.patternValidator(/[A-Z]/, {hasUpperCase: true}), 
+                this.custValidations.patternValidator(/[a-z]/, {hasLowerCase: true}), 
+                this.custValidations.patternValidator(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/, {hasSpecialCharacter: true}),
+                Validators.minLength(8)]], 
+            confirmPassword: ['', Validators.required, Validators.minLength(8)]
+        },{
+            validator: this.custValidations.passwordMatch
+        });
     }
 
-    signup(signupForm: IUser){
+    private get formControl(){
+        return this.signUpForm.controls;
+    }
+    signup(){
         console.log(signupForm);
         this.authService.signup(signupForm).subscribe(
             status => { this.status = String(status)}, 
