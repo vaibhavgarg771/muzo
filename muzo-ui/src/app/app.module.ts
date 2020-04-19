@@ -15,16 +15,21 @@ import { HomeComponent } from './components/home/home.component';
 import { AuthenticationService } from './services/authentication.service';
 import { SessionService } from './services/session.service';
 import { ValidationService } from './services/validation.service';
+import { AlertService } from './services/alert.service';
+import { UserService } from './services/user.service';
+import { AlertsComponent } from './components/_alerts/alerts.component';
 
+// keep the modules in ascending order
 @NgModule({
   declarations: [
+    AlertsComponent,
     AppComponent, 
     ErrorComponent,
-    LoginComponent,
-    SignupComponent, 
-    RandomComponent, 
-    NavComponent, 
     HomeComponent,
+    LoginComponent,
+    NavComponent, 
+    RandomComponent, 
+    SignupComponent, 
   ],
   imports: [
     FormsModule,
@@ -34,9 +39,11 @@ import { ValidationService } from './services/validation.service';
     AppRoutingModule
   ],
   providers: [
+    AlertService,
     ErrorService, 
     AuthenticationService, 
     SessionService, 
+    UserService,
     ValidationService
   ],
   bootstrap: [AppComponent]

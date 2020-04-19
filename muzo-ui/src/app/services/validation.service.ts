@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ValidationErrors, AbstractControl } from '@angular/forms';
+import { ValidationErrors, AbstractControl, FormGroup } from '@angular/forms';
 
 @Injectable({
     providedIn:'root'
@@ -16,11 +16,10 @@ export class ValidationService{
         }
     }
 
-    public passwordMatch(control: AbstractControl){
-        const password = control.get('passord').value;
-        const confPassword = control.get('confirmPassword').value;
-        if(password !== confPassword){
-            control.get('confirmPassword').setErrors({PasswordMatch: false});
-        }
+    public passwordNotMatch(formGroup: FormGroup){
+        const password = formGroup.get('password').value;
+        const confirmPassword = formGroup.get('confirmPassword').value;
+        const match = (password === confirmPassword);
+        return match ? null: {passwordNotMatch: true};
     }
 }

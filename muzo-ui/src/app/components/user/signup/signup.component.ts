@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { IUser } from '../../../models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ValidationService } from '../../../services/validation.service';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
@@ -30,30 +30,85 @@ export class SignupComponent implements OnInit{
                 this.custValidations.patternValidator(/\d/, {hasNumber: true}), 
                 this.custValidations.patternValidator(/[A-Z]/, {hasUpperCase: true}), 
                 this.custValidations.patternValidator(/[a-z]/, {hasLowerCase: true}), 
-                this.custValidations.patternValidator(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/, {hasSpecialCharacter: true}),
+                this.custValidations.patternValidator(/[`!@#$%^&*_+-=:,.?~]/, {hasSpecialCharacter: true}),
                 Validators.minLength(8)]], 
-            confirmPassword: ['', Validators.required, Validators.minLength(8)]
-        },{
-            validator: this.custValidations.passwordMatch
+            confirmPassword: ['', [Validators.required]]
+        }, {
+            validators: this.custValidations.passwordNotMatch.bind(this)
         });
     }
 
-    private get formControl(){
+    get formControl(){
         return this.signUpForm.controls;
     }
-    signup(){
-        console.log(signupForm);
-        this.authService.signup(signupForm).subscribe(
-            status => { this.status = String(status)}, 
-            err => console.error(err), 
-            () => console.log("Successfully Logged In")
-        );
+
+    public patternValidator(regex:RegExp, error: ValidationErrors){
+        return (control: AbstractControl): {[key:string]: any} => {
+            if(!control.value){
+                return null;
+            }
+            const valid = regex.test(control.value);
+            return valid ? null: error;
+        }
+    }
+
+    public passwordMatch(error:ValidationErrors){
+        const password = this.formControl.password.value;
+        const confirmPassword = this.formControl.confirmPassword.value;
+        
+        return (control: AbstractControl): {[key: string]: any} | null => {
+            if(!control.value){
+                return null;
+            }
+            const match = (password === confirmPassword);
+            return match ? error : null;
+          };
+    }
+
+    get usernameFieldStylingClass(){
+        if(this.formControl.username.untouched){
+            return "";
+        }
+        else if(this.formControl.username.dirty && this.formControl.username.valid){
+            return "is-valid";
+        }
+        else {
+            return "is-invalid";
+        }
+    }
+    get passwordFieldStylingClass(){
+        if(this.formControl.password.untouched){
+            return "";
+        }
+        else if(this.formControl.password.dirty && this.formControl.password.valid){
+            return "is-valid";
+        }
+        else {
+            return "is-invalid";
+        }
+    }
+
+    get confirmPasswordFieldStylingClass(){
+
+        if(this.formControl.confirmPassword.untouched){
+            return "";
+        }
+        else if(this.formControl.confirmPassword.dirty && this.formControl.confirmPassword.errors == null){
+            return "is-valid";
+        }
+        else {
+            return "is-invalid";
+        }
+    }
+
+
+
+    signUp(){
+        
     }
 
     matches(){
-        if(this.signupForm.value.confirmPassword == this.signupForm.value.password)
-            return true;
-        return false;
+        // don't know what this method is for 
     }
 
     cancel(){

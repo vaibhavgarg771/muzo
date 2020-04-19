@@ -4,12 +4,12 @@
 			<div class="card-header text-center">
 				<h1>Signup</h1>
 			</div>
-			<form [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
+			<form [formGroup]="signUpForm" (ngSubmit)="signUp()">
 				<div class="card-body"> 
 					<div class="form-group">
 						<label for="username" class="control-label">Email:</label>
                         <input type="email" formControlName="username" placeholder="Email Address" class="form-control"
-                            [ngClass]="{'is-invalid':formControl.username.invalid || fromControl.username.errors}" required/>
+                            [ngClass]="usernameFieldStylingClass" required/>
                         <div *ngIf="formControl.username.errors" class="invalid-feedback">
                             <div *ngIf="formControl.username.errors.required">Email is required</div>
                             <div *ngIf="formControl.username.errors.email">Please enter a valid email</div>
@@ -18,18 +18,27 @@
 					<div class="form-group"> 
 						<label for="password" class="control-label">Password:</label>
                         <input type="password" formControlName="password" placeholder="enter password" class="form-control"
-                            [ngClass]="{'is-invalid' : formControl.password.invalid || formControl.password.errors}" required/>
-                        <div *ngIf="fromControl.password.errors" class="invalid-feedback">
-                            <div *ngIf="formControl.password.errors.required">Password is required</div>
+                            [ngClass]="passwordFieldStylingClass" required/>
+                        <div *ngIf="formControl.password.errors" class="invalid-feedback">
+							<div *ngIf="formControl.password.errors?.required">Password is required</div>
+							<div *ngIf="formControl.password.errors?.minlength">Password must contain atleast 8 characters</div>
+							<div *ngIf="formControl.password.errors?.hasNumber">Password must contain a number</div>
+							<div *ngIf="formControl.password.errors?.hasLowerCase">Password must contain a lower case letter</div>
+							<div *ngIf="formControl.password.errors?.hasUpperCase">Password must contain an upper case letter</div>
+							<div *ngIf="formControl.password.errors?.hasSpecialCharacter">Password must contain a special character `!@#$%^&*_+-=:,.?~ </div>
                         </div>
                     </div>
 					<div>
 						<label for="confirmPassword" class="control-label">Confirm Password:</label>
-						<input type="password" formControlName="confirmPassword" placeholder="Confirm password" class="form-control"/>
+						<input type="password" formControlName="confirmPassword" placeholder="Confirm password" class="form-control"
+							[ngClass]="confirmPasswordFieldStylingClass" required/>
+						<div *ngIf="!formControl.confirmPassword.errors?.passwordNotMatch" class="invalid-feedback">
+							<div>Passwords do not match</div>
+						</div>
 					</div>
 				</div>
 				<div class="card-footer">
-					<button class="btn btn-primary" type="submit" [disabled]="!signupForm.valid">Submit</button>
+					<button class="btn btn-primary" type="submit" [disabled]="!signUpForm.valid">SignUp</button>
 				</div>
 			</form>
 		</div>

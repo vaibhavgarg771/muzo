@@ -9,18 +9,18 @@
 					<div class="form-group">
 						<label for="username" class="control-label">Email:</label>
                         <input type="email" formControlName="username" placeholder="Email Address" class="form-control"
-                            [ngClass]="{'is-invalid':formControl.username.invalid || fromControl.username.errors}" required/>
+                            [ngClass]="usernameFieldStylingClass" required/>
                         <div *ngIf="formControl.username.errors" class="invalid-feedback">
-                            <div *ngIf="formControl.username.errors.required">Email is required</div>
-                            <div *ngIf="formControl.username.errors.email">Please enter a valid email</div>
+                            <div *ngIf="formControl.username.errors?.required">Email is required</div>
+                            <div *ngIf="formControl.username.errors?.email">Please enter a valid email</div>
                         </div>
 					</div>
 					<div class="form-group"> 
 						<label for="password" class="control-label">Password:</label>
                         <input type="password" formControlName="password" placeholder="enter password" class="form-control"
-                            [ngClass]="{'is-invalid' : formControl.password.invalid || formControl.password.errors}" required/>
-                        <div *ngIf="fromControl.password.errors" class="invalid-feedback">
-                            <div *ngIf="formControl.password.errors.required">Password is required</div>
+                            [ngClass]="passwordFieldStylingClass" required/>
+                        <div *ngIf="formControl.password.errors" class="invalid-feedback">
+                            <div *ngIf="formControl.password.errors?.required">Password is required</div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -29,8 +29,9 @@
                     </div>
 				</div>
 				<div class="card-footer">
-                    <div class="text-left">forgotPassword</div>
-                    <div class="text-right">Singup</div>
+
+                    <!-- <div class="text-left">forgotPassword</div>
+                    <div class="text-right">Singup</div> -->
 				</div>
 			</form>
 		</div>
