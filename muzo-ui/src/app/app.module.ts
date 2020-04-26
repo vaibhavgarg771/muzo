@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-
+import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ErrorComponent } from './components/error/error.component';
@@ -14,15 +15,11 @@ import { NavComponent } from './components/nav/nav.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthenticationService } from './services/authentication.service';
 import { SessionService } from './services/session.service';
-import { ValidationService } from './services/validation.service';
-import { AlertService } from './services/alert.service';
 import { UserService } from './services/user.service';
-import { AlertsComponent } from './components/_alerts/alerts.component';
 
 // keep the modules in ascending order
 @NgModule({
   declarations: [
-    AlertsComponent,
     AppComponent, 
     ErrorComponent,
     HomeComponent,
@@ -32,19 +29,19 @@ import { AlertsComponent } from './components/_alerts/alerts.component';
     SignupComponent, 
   ],
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
     BrowserModule,
-    AppRoutingModule
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
-    AlertService,
-    ErrorService, 
     AuthenticationService, 
+    ErrorService, 
     SessionService, 
-    UserService,
-    ValidationService
+    UserService
   ],
   bootstrap: [AppComponent]
 })

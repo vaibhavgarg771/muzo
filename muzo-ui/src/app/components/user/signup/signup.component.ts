@@ -1,117 +1,92 @@
 import { Component, OnInit } from "@angular/core";
-import { IUser } from '../../../models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { FormGroup, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
-import { ValidationService } from '../../../services/validation.service';
+import { patternValidator, passwordNotMatch } from '../../../shared/validation.directive';
 import { Router } from '@angular/router';
-import { AlertService } from 'src/app/services/alert.service';
+import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-    selector:"signup", 
-    templateUrl:'./signup.component.html',
+    selector: "signup",
+    templateUrl: './signup.component.html',
 })
 
-export class SignupComponent implements OnInit{
+export class SignupComponent implements OnInit {
     signUpForm: FormGroup;
-    loading:boolean = false;
-
-
+    loading: boolean = false;
     status: string;
+    error_messages = {
+        email: {
+            required: "Email is required",
+            invalidEmailFormat: "Please enter a valid email"
+        },
+        password: {
+            required: "Password is required",
+            minLength: "Password must contain atleast 8 characters",
+            hasNumber: "Password must contain a number",
+            hasLowerCase: "Password must contain a lower case letter",
+            hasUpperCase: "Password must contain an upper case letter",
+            hasSpecialCharacter: "Password must contain a special character !@#$%^&*_+-=:,.?"
+        }, 
+        confirmPassword: {
+            required: "Please enter your password again",
+            passwordNotMatch: "Passwords do not match"
+        }
+    };
     constructor(private formBuilder: FormBuilder,
-                private authService: AuthenticationService, 
-                private router: Router, 
-                private alertService: AlertService, 
-                private custValidations: ValidationService){}
+        private authService: AuthenticationService,
+        private router: Router,
+        private toastr: ToastrService) { }
 
-    ngOnInit(){
+    ngOnInit() {
         this.signUpForm = this.formBuilder.group({
-            username: ['', [Validators.required, Validators.email]], 
+            username: ['', [Validators.required, patternValidator(new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"), { email: true})]],
             password: ['', [Validators.required,
-                this.custValidations.patternValidator(/\d/, {hasNumber: true}), 
-                this.custValidations.patternValidator(/[A-Z]/, {hasUpperCase: true}), 
-                this.custValidations.patternValidator(/[a-z]/, {hasLowerCase: true}), 
-                this.custValidations.patternValidator(/[`!@#$%^&*_+-=:,.?~]/, {hasSpecialCharacter: true}),
-                Validators.minLength(8)]], 
+            patternValidator(/\d/, { hasNumber: true }),
+            patternValidator(/[A-Z]/, { hasUpperCase: true }),
+            patternValidator(/[a-z]/, { hasLowerCase: true }),
+            patternValidator(/[\!\@\#\$\%\^\&\*\_\+\-\=\:\,\.\?\~]/, { hasSpecialCharacter: true }),
+            Validators.minLength(8)]],
             confirmPassword: ['', [Validators.required]]
         }, {
-            validators: this.custValidations.passwordNotMatch.bind(this)
+            validators: passwordNotMatch
         });
     }
 
-    get formControl(){
+    get formControl() {
         return this.signUpForm.controls;
     }
 
-    public patternValidator(regex:RegExp, error: ValidationErrors){
-        return (control: AbstractControl): {[key:string]: any} => {
-            if(!control.value){
-                return null;
-            }
-            const valid = regex.test(control.value);
-            return valid ? null: error;
+    getFormElement(elementName: string){
+        return this.signUpForm.get(elementName);
+    }
+    
+    fieldStyling(element: string){
+        if (this.getFormElement(element).pristine) {
+            return "";
+        }
+        else if (this.getFormElement(element).dirty && this.getFormElement(element).valid) {
+            return "is-valid";
+        }
+        else {
+            return "is-invalid";
         }
     }
 
-    public passwordMatch(error:ValidationErrors){
+    signUp() {
+        console.log("going in for signup");
+        const username = this.formControl.username.value;
         const password = this.formControl.password.value;
-        const confirmPassword = this.formControl.confirmPassword.value;
-        
-        return (control: AbstractControl): {[key: string]: any} | null => {
-            if(!control.value){
-                return null;
-            }
-            const match = (password === confirmPassword);
-            return match ? error : null;
-          };
+        console.log(username + " : " + password + " : these were used to register");
+        // this.toastr.success("Successfully signup user");
+        this.authService.signup(username, password);
     }
 
-    get usernameFieldStylingClass(){
-        if(this.formControl.username.untouched){
-            return "";
-        }
-        else if(this.formControl.username.dirty && this.formControl.username.valid){
-            return "is-valid";
-        }
-        else {
-            return "is-invalid";
-        }
-    }
-    get passwordFieldStylingClass(){
-        if(this.formControl.password.untouched){
-            return "";
-        }
-        else if(this.formControl.password.dirty && this.formControl.password.valid){
-            return "is-valid";
-        }
-        else {
-            return "is-invalid";
-        }
-    }
-
-    get confirmPasswordFieldStylingClass(){
-
-        if(this.formControl.confirmPassword.untouched){
-            return "";
-        }
-        else if(this.formControl.confirmPassword.dirty && this.formControl.confirmPassword.errors == null){
-            return "is-valid";
-        }
-        else {
-            return "is-invalid";
-        }
-    }
-
-
-
-    signUp(){
-        
-    }
-
-    matches(){
+    matches() {
         // don't know what this method is for 
     }
 
-    cancel(){
+    cancel() {
         //doNOTHING
     }
 }

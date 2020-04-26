@@ -1,61 +1,66 @@
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color:beige;">
-    <a class="navbar-brand" href="#">Muzo Logo</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">All Songs</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0 col-md-8" (ngSubmit)=search()>
-        <input class="form-control mr-sm-2 col-md-6" type="search" name="searchTerm" placeholder="Search" aria-label="Search" [(ngModel)]="searchTerm">
-        <button class="btn btn-outline-success my-2 my-sm-0 col-md-1" type="submit">Search</button>
-      </form>
-      <div class="navbar-right">
-        <ul class="nav navbar-nav"  *ngIf="this.authService.currentUserValue == null">
-          <li class="nav-item">
-			<a [routerLink]="['muzo/singup']" class="nav-link">Signup</a>
-		  </li>
-		  <li>
-            <a [routerLink] = "['muzo/login']" class="nav-link">Login</a>
-		  </li>
-		</ul>
-		<ul class="nav navbar-nav" *ngIf="this.authService.currentUserValue != null">
-		  <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				{{ this.currentUser.username }}
-			</a>
-			<div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdown">
-			  <button class="dropdown-item" (click)="switchToProfile()">Profile</button>
-			  <div class="dropdown-divider"></div>
-			  <button class="dropdown-item" (click)='logout()'>Logout</button>
-			</div>
-		  </li>
-          <li> 
-            <a  ></a>
+	<a class="navbar-brand" href="#">Muzo Logo</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+		aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
 
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active">
+				<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">All Songs</a>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false">
+					Dropdown
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="#">Action</a>
+					<a class="dropdown-item" href="#">Another action</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="#">Something else here</a>
+				</div>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+			</li>
+		</ul>
+		<form class="form-inline my-2 my-lg-0 col-md-8" (ngSubmit)=search()>
+			<input class="form-control mr-sm-2 col-md-6" type="search" name="searchTerm" placeholder="Search"
+				aria-label="Search" [(ngModel)]="searchTerm">
+			<button class="btn btn-outline-success my-2 my-sm-0 col-md-1" type="submit">Search</button>
+		</form>
+		<div class="navbar-right">
+			<ul class="nav navbar-nav" *ngIf="this.currentUser == null">
+				<li class="nav-item">
+					<a [routerLink]="['muzo/signup']" class="nav-link">Signup</a>
+				</li>
+				<li>
+					<a [routerLink]="['muzo/login']" class="nav-link">Login</a>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav" *ngIf="this.currentUser != null">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ this.currentUser.username }}
+					</a>
+					<div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+						aria-labelledby="navbarDropdown">
+						<button class="dropdown-item" (click)="switchToProfile()">Profile</button>
+						<div class="dropdown-divider"></div>
+						<button class="dropdown-item" (click)='logout()'>Logout</button>
+					</div>
+				</li>
+				<li>
+					<a></a>
+
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>

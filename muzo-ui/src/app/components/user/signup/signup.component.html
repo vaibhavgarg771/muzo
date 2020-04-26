@@ -5,35 +5,36 @@
 				<h1>Signup</h1>
 			</div>
 			<form [formGroup]="signUpForm" (ngSubmit)="signUp()">
-				<div class="card-body"> 
+				<div class="card-body">
 					<div class="form-group">
 						<label for="username" class="control-label">Email:</label>
-                        <input type="email" formControlName="username" placeholder="Email Address" class="form-control"
-                            [ngClass]="usernameFieldStylingClass" required/>
-                        <div *ngIf="formControl.username.errors" class="invalid-feedback">
-                            <div *ngIf="formControl.username.errors.required">Email is required</div>
-                            <div *ngIf="formControl.username.errors.email">Please enter a valid email</div>
-                        </div>
+						<input type="email" formControlName="username" placeholder="Email Address" class="form-control"
+							[ngClass]="fieldStyling('username')" name="username" required />
+						<div *ngIf="formControl.username.errors" class="invalid-feedback">
+							<div *ngIf="formControl.username.errors?.required">{{this.error_messages.email.required}}</div>
+							<div *ngIf="formControl.username.errors?.email">{{this.error_messages.email.invalidEmailFormat}}</div>
+						</div>
 					</div>
-					<div class="form-group"> 
+					<div class="form-group">
 						<label for="password" class="control-label">Password:</label>
-                        <input type="password" formControlName="password" placeholder="enter password" class="form-control"
-                            [ngClass]="passwordFieldStylingClass" required/>
-                        <div *ngIf="formControl.password.errors" class="invalid-feedback">
-							<div *ngIf="formControl.password.errors?.required">Password is required</div>
-							<div *ngIf="formControl.password.errors?.minlength">Password must contain atleast 8 characters</div>
-							<div *ngIf="formControl.password.errors?.hasNumber">Password must contain a number</div>
-							<div *ngIf="formControl.password.errors?.hasLowerCase">Password must contain a lower case letter</div>
-							<div *ngIf="formControl.password.errors?.hasUpperCase">Password must contain an upper case letter</div>
-							<div *ngIf="formControl.password.errors?.hasSpecialCharacter">Password must contain a special character `!@#$%^&*_+-=:,.?~ </div>
-                        </div>
-                    </div>
+						<input type="password" formControlName="password" placeholder="enter password"
+							class="form-control" [ngClass]="fieldStyling('password')" required />
+						<div *ngIf="formControl.password.errors" class="invalid-feedback">
+							<div *ngIf="formControl.password.errors?.required">{{this.error_messages.password.required}}</div>
+							<div *ngIf="formControl.password.errors?.minlength">{{this.error_messages.password.minLength}}</div>
+							<div *ngIf="formControl.password.errors?.hasNumber">{{this.error_messages.password.hasNumber}}</div>
+							<div *ngIf="formControl.password.errors?.hasLowerCase">{{this.error_messages.password.hasLowerCase}}</div>
+							<div *ngIf="formControl.password.errors?.hasUpperCase">{{this.error_messages.password.hasUpperCase}}</div>
+							<div *ngIf="formControl.password.errors?.hasSpecialCharacter">{{this.error_messages.password.hasSpecialCharacter}}</div>
+						</div>
+					</div>
 					<div>
 						<label for="confirmPassword" class="control-label">Confirm Password:</label>
-						<input type="password" formControlName="confirmPassword" placeholder="Confirm password" class="form-control"
-							[ngClass]="confirmPasswordFieldStylingClass" required/>
-						<div *ngIf="!formControl.confirmPassword.errors?.passwordNotMatch" class="invalid-feedback">
-							<div>Passwords do not match</div>
+						<input type="password" formControlName="confirmPassword" placeholder="Confirm password"
+							class="form-control" [ngClass]="fieldStyling('confirmPassword')" required />
+						<div *ngIf="formControl.confirmPassword.errors" class="invalid-feedback">
+							<div *ngIf="formControl.confirmPassword.errors?.required">{{this.error_messages.confirmPassword.required}}</div>
+							<div *ngIf="formControl.confirmPassword.errors?.passwordNotMatch">{{this.error_messages.confirmPassword.passwordNotMatch}}</div>
 						</div>
 					</div>
 				</div>

@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { IUser } from '../../../models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AlertService } from 'src/app/services/alert.service';
 import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector:"login", 
@@ -14,7 +14,7 @@ import { first } from 'rxjs/operators';
 export class LoginComponent implements OnInit{
    
     loading: boolean = false;
-    private returnUrl: String;
+    returnUrl: string;
     loginForm: FormGroup;
     // showUsernameErrors: Boolean = false;
     // showPasswordErrors: Boolean = false;
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit{
                 private authService: AuthenticationService,
                 private router: Router,
                 private route: ActivatedRoute, 
-                private alertService: AlertService){
+                private toastr: ToastrService){
         if(this.authService.currentUserValue){
             this.router.navigate(["muzo/home"]);
         }
@@ -40,22 +40,15 @@ export class LoginComponent implements OnInit{
         return this.loginForm.controls;
     }
 
-    get usernameFieldStylingClass(){
-        if(this.formControl.username.untouched){
-            return "";
-        }
-        else if(this.formControl.username.dirty && this.formControl.username.valid){
-            return "is-valid";
-        }
-        else {
-            return "is-invalid";
-        }
+    getFormElement(elementName: string){
+        return this.loginForm.get(elementName);
     }
-    get passwordFieldStylingClass(){
-        if(this.formControl.password.untouched){
+    
+    fieldStyling(element: string){
+        if (this.getFormElement(element).pristine) {
             return "";
         }
-        else if(this.formControl.password.dirty && this.formControl.password.valid){
+        else if (this.getFormElement(element).dirty && this.getFormElement(element).valid) {
             return "is-valid";
         }
         else {
@@ -64,18 +57,8 @@ export class LoginComponent implements OnInit{
     }
 
     login(){
-        if(this.loginForm.invalid){
-            return;
-        }
         this.loading = true;
-        this.authService.login(this.formControl.username.value, this.formControl.password.value)
-            .pipe(first())
-            .subscribe(user => {
-                this.router.navigate([this.returnUrl]);
-            }, 
-            err => {
-                this.alertService.error("Invalid username or password :" + err);
-                this.loading = false;
-            });
+        this.authService.login(this.formControl.username.value, this.formControl.password.value, this.returnUrl);
+        this.loading = false;
     }
 }

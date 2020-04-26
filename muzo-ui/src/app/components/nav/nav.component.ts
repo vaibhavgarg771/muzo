@@ -24,6 +24,7 @@ export class NavComponent implements OnInit{
     constructor(private authService: AuthenticationService, private router: Router){
         this.currentUserSubscription = this.authService.currentUser.subscribe(user => {
             this.currentUser = user;
+            console.log(user);console.log("logging in nav component");
         })
     }
     
@@ -37,6 +38,7 @@ export class NavComponent implements OnInit{
     }
 
     public logout():void{
+        this.authService.logout();
         this.currentUserSubscription.unsubscribe();
         this.router.navigate(['/muzo/home']);
     }

@@ -9,7 +9,7 @@
 					<div class="form-group">
 						<label for="username" class="control-label">Email:</label>
                         <input type="email" formControlName="username" placeholder="Email Address" class="form-control"
-                            [ngClass]="usernameFieldStylingClass" required/>
+                            [ngClass]="fieldStyling('username')" required/>
                         <div *ngIf="formControl.username.errors" class="invalid-feedback">
                             <div *ngIf="formControl.username.errors?.required">Email is required</div>
                             <div *ngIf="formControl.username.errors?.email">Please enter a valid email</div>
@@ -18,7 +18,7 @@
 					<div class="form-group"> 
 						<label for="password" class="control-label">Password:</label>
                         <input type="password" formControlName="password" placeholder="enter password" class="form-control"
-                            [ngClass]="passwordFieldStylingClass" required/>
+                            [ngClass]="fieldStyling('password')" required/>
                         <div *ngIf="formControl.password.errors" class="invalid-feedback">
                             <div *ngIf="formControl.password.errors?.required">Password is required</div>
                         </div>
